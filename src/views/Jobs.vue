@@ -129,7 +129,7 @@
         Trabajos
       </div>
       <div @click="showTools()">
-        servicios
+        Servicios
       </div>
     </div>
   </div>
@@ -426,6 +426,7 @@ h1, h2 {
   left: 0;
   width: 100%;
   padding: 1.5rem;
+  z-index: 3;
 }
 
 .menu {
