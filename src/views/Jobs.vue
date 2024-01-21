@@ -132,6 +132,13 @@
         Servicios
       </div>
     </div>
+
+    <div v-if="isPromotionActive" class="promotion">
+      <div>
+        <div @click="togglePromotion()" class="text-end">Cerrar</div>
+        <img @click="goToBusiness(numberPromotion)" :src="imgPromotion" alt="">
+      </div>
+    </div>
   </div>
 </template>
 
@@ -169,6 +176,9 @@ export default {
       isRent: true,
       isJob: false,
       isTool: false,
+      imgPromotion: "https://firebasestorage.googleapis.com/v0/b/festi-suggest.appspot.com/o/WhatsApp%20Image%202024-01-20%20at%205.44.07%20PM.jpeg?alt=media&token=c056a2ef-5dd3-4887-998d-efde4df9baba",
+      numberPromotion: 3227914251,
+      isPromotionActive: true,
     }
   },
   async mounted() {
@@ -319,6 +329,10 @@ export default {
       this.isModalHomeActive = !this.isModalHomeActive
     },
 
+    togglePromotion() {
+      this.isPromotionActive =  !this.isPromotionActive
+    },
+
     scrollToTop() {
       window.scrollTo({
         top: 0,
@@ -327,6 +341,9 @@ export default {
     },
 
     showRents() {
+      this.isPromotionActive = true
+      this.imgPromotion = "https://firebasestorage.googleapis.com/v0/b/festi-suggest.appspot.com/o/WhatsApp%20Image%202024-01-20%20at%205.44.07%20PM.jpeg?alt=media&token=c056a2ef-5dd3-4887-998d-efde4df9baba"
+      this.numberPromotion = 3227914251
       this.isRent = true
       this.isJob = false
       this.isTool = false
@@ -335,6 +352,9 @@ export default {
     },
 
     showJobs() {
+      this.isPromotionActive = true
+      this.imgPromotion = "https://firebasestorage.googleapis.com/v0/b/festi-suggest.appspot.com/o/chimbas.jpeg?alt=media&token=f48dfdf0-9e34-494f-8d9a-a850c10e76bf"
+      this.numberPromotion = 3112932574
       this.isRent = false
       this.isJob = true
       this.isTool = false
@@ -343,6 +363,9 @@ export default {
     },
 
     showTools() {
+      this.isPromotionActive = true
+      this.imgPromotion = "https://firebasestorage.googleapis.com/v0/b/festi-suggest.appspot.com/o/WhatsApp%20Image%202024-01-21%20at%2012.27.35%20PM.jpeg?alt=media&token=c9ebdb48-4982-4c6a-8eb3-96bc732ec4a4"
+      this.numberPromotion = 3229497910
       this.isRent = false
       this.isJob = false
       this.isTool = true
@@ -373,6 +396,7 @@ h1, h2 {
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 }
 
 .job-title {
@@ -445,6 +469,20 @@ h1, h2 {
   flex-direction: row;
   padding-bottom: 1rem;
   align-items: center;
+}
+
+.promotion {
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  background-color: #000000bf;
+  position: absolute;
+}
+
+.promotion img {
+  width: 100%;
 }
 
 </style>
