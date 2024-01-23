@@ -472,6 +472,7 @@ h1, h2 {
 }
 
 .promotion {
+  margin: 1.5rem 0;
   right: 0;
   width: 100%;
   height: 100vh;
