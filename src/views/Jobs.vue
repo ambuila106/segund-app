@@ -479,10 +479,12 @@ h1, h2 {
   align-items: center;
   background-color: #000000bf;
   position: absolute;
+  justify-content: center;
 }
 
 .promotion img {
   width: 100%;
+  max-height: 100vh;
 }
 
 </style>
