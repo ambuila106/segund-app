@@ -179,6 +179,9 @@ export default {
       imgPromotion: "https://firebasestorage.googleapis.com/v0/b/festi-suggest.appspot.com/o/WhatsApp%20Image%202024-01-20%20at%205.44.07%20PM.jpeg?alt=media&token=c056a2ef-5dd3-4887-998d-efde4df9baba",
       numberPromotion: 3227914251,
       isPromotionActive: true,
+      isPromotionRentShowed: true,
+      isPromotionJobShowed: false,
+      isPromotionToolShowed: false,
     }
   },
   async mounted() {
@@ -341,34 +344,37 @@ export default {
     },
 
     showRents() {
-      this.isPromotionActive = true
+      this.isPromotionActive = true && !this.isPromotionRentShowed
       this.imgPromotion = "https://firebasestorage.googleapis.com/v0/b/festi-suggest.appspot.com/o/WhatsApp%20Image%202024-01-20%20at%205.44.07%20PM.jpeg?alt=media&token=c056a2ef-5dd3-4887-998d-efde4df9baba"
       this.numberPromotion = 3227914251
       this.isRent = true
       this.isJob = false
       this.isTool = false
+      this.isPromotionRentShowed = true
 
       this.scrollToTop()
     },
 
     showJobs() {
-      this.isPromotionActive = true
+      this.isPromotionActive = true && !this.isPromotionJobShowed
       this.imgPromotion = "https://firebasestorage.googleapis.com/v0/b/festi-suggest.appspot.com/o/chimbas.jpeg?alt=media&token=f48dfdf0-9e34-494f-8d9a-a850c10e76bf"
       this.numberPromotion = 3112932574
       this.isRent = false
       this.isJob = true
       this.isTool = false
+      this.isPromotionJobShowed = true
 
       this.scrollToTop()
     },
 
     showTools() {
-      this.isPromotionActive = true
+      this.isPromotionActive = true && !this.isPromotionToolShowed
       this.imgPromotion = "https://firebasestorage.googleapis.com/v0/b/festi-suggest.appspot.com/o/WhatsApp%20Image%202024-01-21%20at%2012.27.35%20PM.jpeg?alt=media&token=c9ebdb48-4982-4c6a-8eb3-96bc732ec4a4"
       this.numberPromotion = 3229497910
       this.isRent = false
       this.isJob = false
       this.isTool = true
+      this.isPromotionToolShowed = true
 
       this.scrollToTop()
     }
