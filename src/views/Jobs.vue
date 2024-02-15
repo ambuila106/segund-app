@@ -45,6 +45,21 @@
       </div>
     </div>
 
+    <div v-if="isModalLostActive" class="modal-form">
+      <div class="bordered-box">
+          <p>Agrega tu objeto perdido:</p>
+          <div class="btn btn-link p-0" @click="toggleModalLost()">
+            cerrar
+          </div>
+
+        <div class="input-send">
+          <input v-model="newLost.description" type="text" placeholder="Descripción">
+          <input v-model="newLost.number" type="text" placeholder="Número de whatsapp">
+          <div class="button" @click="addLose()">Enviar</div>
+        </div>
+      </div>
+    </div>
+
     <template v-if="isRent">
       <h1 class="job-title">HOME</h1>
 
@@ -120,8 +135,36 @@
       </div>
     </template>
 
+    <template v-if="isLost">
+      <h1 class="job-title">LOST</h1>
+
+      <div class="actions">
+        <a>
+          Perdidos: {{ losts?.length }}
+        </a>
+
+        <div class="btn btn-link ml-1 p-0" @click="toggleModalService()">
+          Agregar
+        </div>
+      </div>
+
+      <div v-for="lost in losts" @click="goToBusiness(lost.number)" :key="lost?.description" class="bordered-box">
+        {{ lost?.description }}
+
+        <template v-if="lost?.number">
+          <hr>
+          <a class="job-number">
+            Whatsapp: {{ lost.number }}
+          </a>
+        </template>
+      </div>
+    </template>
+
 
     <div class="menu">
+      <div @click="showLosts()">
+        Perdidos
+      </div>
       <div @click="showRents()">
         Arriendos
       </div>
@@ -158,6 +201,7 @@ export default {
       jobs: [],
       services: [],
       homes: [],
+      losts: [],
       isModalServiceActive: false,
       isModalJobActive: false,
       isModalHomeActive: false,
@@ -176,12 +220,14 @@ export default {
       isRent: true,
       isJob: false,
       isTool: false,
+      isLost: false,
       imgPromotion: "https://firebasestorage.googleapis.com/v0/b/festi-suggest.appspot.com/o/WhatsApp%20Image%202024-01-20%20at%205.44.07%20PM.jpeg?alt=media&token=c056a2ef-5dd3-4887-998d-efde4df9baba",
       numberPromotion: 3227914251,
       isPromotionActive: true,
       isPromotionRentShowed: true,
       isPromotionJobShowed: false,
       isPromotionToolShowed: false,
+      isPromotionLostShowed: false,
     }
   },
   async mounted() {
@@ -211,6 +257,14 @@ export default {
       const data = snapshot.val()
       console.log("data: ", data)
       this.homes = data?.reverse().filter(elemento => elemento)
+    })
+
+    const lostRef = ref(this.db, 'losts/');
+
+    onValue(lostRef, (snapshot) => {
+      const data = snapshot.val()
+      console.log("data: ", data)
+      this.losts = data?.reverse().filter(elemento => elemento)
     })
 
     console.log(getDatabase(app))
@@ -314,6 +368,31 @@ export default {
         }
     },
 
+    async addLost(){
+      const listaRef = ref(this.db, 'losts/')
+
+        try {
+          const snapshot = await get(listaRef)
+
+          const listaActual = snapshot.val()
+
+          if (listaActual) {
+            listaActual.push(this.newLost)
+
+            await set(listaRef, listaActual)
+          }
+
+        } catch (error) {
+          console.error("Error al agregar la vista", error);
+        }
+
+        this.toggleModalLost()
+        this.newLost = {
+          description: '',
+          number: ''
+        }
+    },
+
     goToBusiness(number){
       if(number) {
         window.location.href = 'https://wa.me/' + "57" + number
@@ -330,6 +409,10 @@ export default {
 
     toggleModalHome() {
       this.isModalHomeActive = !this.isModalHomeActive
+    },
+
+    toggleModalLost() {
+      this.isModalLostActive =  !this.isModalLostActive
     },
 
     togglePromotion() {
@@ -350,6 +433,7 @@ export default {
       this.isRent = true
       this.isJob = false
       this.isTool = false
+      this.isLost = false
       this.isPromotionRentShowed = true
 
       this.scrollToTop()
@@ -362,6 +446,7 @@ export default {
       this.isRent = false
       this.isJob = true
       this.isTool = false
+      this.isLost = false
       this.isPromotionJobShowed = true
 
       this.scrollToTop()
@@ -374,7 +459,21 @@ export default {
       this.isRent = false
       this.isJob = false
       this.isTool = true
+      this.isLost = false
       this.isPromotionToolShowed = true
+
+      this.scrollToTop()
+    },
+
+    showLosts() {
+      this.isPromotionActive = true && !this.isPromotionLostShowed
+      this.imgPromotion = "https://firebasestorage.googleapis.com/v0/b/festi-suggest.appspot.com/o/WhatsApp%20Image%202024-01-21%20at%2012.27.35%20PM.jpeg?alt=media&token=c9ebdb48-4982-4c6a-8eb3-96bc732ec4a4"
+      this.numberPromotion = 3229497910
+      this.isRent = false
+      this.isJob = false
+      this.isTool = false
+      this.isLost = true
+      this.isPromotionLostShowed = true
 
       this.scrollToTop()
     }
