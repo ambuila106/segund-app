@@ -55,7 +55,7 @@
         <div class="input-send">
           <input v-model="newLost.description" type="text" placeholder="Descripción">
           <input v-model="newLost.number" type="text" placeholder="Número de whatsapp">
-          <div class="button" @click="addLose()">Enviar</div>
+          <div class="button" @click="addLost()">Enviar</div>
         </div>
       </div>
     </div>
@@ -143,7 +143,7 @@
           Perdidos: {{ losts?.length }}
         </a>
 
-        <div class="btn btn-link ml-1 p-0" @click="toggleModalService()">
+        <div class="btn btn-link ml-1 p-0" @click="toggleModalLost()">
           Agregar
         </div>
       </div>
@@ -187,7 +187,7 @@
 
 <script>
 import app from '@/firebase.js'
-import { getDatabase, ref, get, set, onValue } from "firebase/database";
+import { getDatabase, ref, get, set, onValue  } from "firebase/database";
 
 export default {
   name: 'Jobs',
@@ -205,6 +205,7 @@ export default {
       isModalServiceActive: false,
       isModalJobActive: false,
       isModalHomeActive: false,
+      isModalLostActive: false,
       newService: {
         description: '',
         number: ''
@@ -214,6 +215,10 @@ export default {
         number: ''
       },
       newHome: {
+        description: '',
+        number: ''
+      },
+      newLost: {
         description: '',
         number: ''
       },
@@ -228,14 +233,23 @@ export default {
       isPromotionJobShowed: false,
       isPromotionToolShowed: false,
       isPromotionLostShowed: false,
+      serverDate: null,
     }
   },
   async mounted() {
-    //const db = firebase.database().ref();
     this.db = getDatabase();
     this.addView()
 
     const jobsRef = ref(this.db, 'jobs/');
+
+    const serverTimeRef = ref(this.db, '.info/serverTimeOffset');
+    onValue(serverTimeRef, (snapshot) => {
+        const offset = snapshot.val();
+        const serverTime = new Date(Date.now() + offset);
+        this.serverDate = serverTime;
+    })
+
+    console.log("hora: " + this.serverDate)
 
     onValue(jobsRef, (snapshot) => {
       const data = snapshot.val()

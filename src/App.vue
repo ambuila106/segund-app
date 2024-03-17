@@ -20,4 +20,8 @@ export default {
   background-color: #000516;
   color: white;
 }
+
+html {
+  background-color: #000516;
+}
 </style>
